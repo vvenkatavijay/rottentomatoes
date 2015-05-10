@@ -9,13 +9,12 @@
 import UIKit
 
 class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
-    
-    
 
     @IBOutlet weak var networkErrorImg: UIImageView!
     @IBOutlet weak var tableView: UITableView!
     var movies: NSArray = []
     var refreshControl:UIRefreshControl!
+    var url:String = ""
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,8 +25,16 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         SVProgressHUD.show()
         tableView.separatorColor = UIColor.whiteColor()
         
+        let test = self.tabBarController?.viewControllers
+        println(test)
         
-        var url = NSURL(string: "http://api.rottentomatoes.com/api/public/v1.0/lists/dvds/top_rentals.json?apikey=f2fk8pundhpxf77fscxvkupy")!
+        let dvds = test![0] as! ViewController
+        dvds.url = "http://api.rottentomatoes.com/api/public/v1.0/lists/dvds/top_rentals.json?apikey=f2fk8pundhpxf77fscxvkupy"
+        
+        let movies = test![1] as! ViewController
+        movies.url = "http://api.rottentomatoes.com/api/public/v1.0/lists/movies/in_theaters.json?apikey=f2fk8pundhpxf77fscxvkupy"
+        
+        var url = NSURL(string: self.url)!
         var request = NSURLRequest(URL: url)
         NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) { (response: NSURLResponse!, data: NSData!, error: NSError!) -> Void in
             
@@ -78,7 +85,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     func onRefresh(){
-        var url = NSURL(string: "http://api.rottentomatoes.com/api/public/v1.0/lists/dvds/top_rentals.json?apikey=f2fk8pundhpxf77fscxvkupy")!
+        var url = NSURL(string: self.url)!
         var request = NSURLRequest(URL: url)
         NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) { (response: NSURLResponse!, data: NSData!, error: NSError!) -> Void in
             

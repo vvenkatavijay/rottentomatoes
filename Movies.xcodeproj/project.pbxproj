@@ -16,7 +16,6 @@
 		B15BC64F1AFE138000C61CCE /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = B15BC64D1AFE138000C61CCE /* LaunchScreen.xib */; };
 		B15BC65B1AFE138000C61CCE /* MoviesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15BC65A1AFE138000C61CCE /* MoviesTests.swift */; };
 		B15BC6651AFE1B3E00C61CCE /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15BC6641AFE1B3E00C61CCE /* TableViewCell.swift */; };
-		B15BC6681AFE1E2500C61CCE /* TableView.m in Sources */ = {isa = PBXBuildFile; fileRef = B15BC6671AFE1E2500C61CCE /* TableView.m */; };
 		B15BC66A1AFE27B900C61CCE /* MovieDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15BC6691AFE27B900C61CCE /* MovieDetailsViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -46,7 +45,6 @@
 		B15BC65A1AFE138000C61CCE /* MoviesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesTests.swift; sourceTree = "<group>"; };
 		B15BC6641AFE1B3E00C61CCE /* TableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
 		B15BC6661AFE1E2200C61CCE /* Movies-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Movies-Bridging-Header.h"; sourceTree = "<group>"; };
-		B15BC6671AFE1E2500C61CCE /* TableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableView.m; sourceTree = "<group>"; };
 		B15BC6691AFE27B900C61CCE /* MovieDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieDetailsViewController.swift; sourceTree = "<group>"; };
 		C91BA0151C95EB0DBD3DF259 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -109,7 +107,6 @@
 				B15BC64D1AFE138000C61CCE /* LaunchScreen.xib */,
 				B15BC6421AFE137F00C61CCE /* Supporting Files */,
 				B15BC6641AFE1B3E00C61CCE /* TableViewCell.swift */,
-				B15BC6671AFE1E2500C61CCE /* TableView.m */,
 				B15BC6661AFE1E2200C61CCE /* Movies-Bridging-Header.h */,
 				B15BC6691AFE27B900C61CCE /* MovieDetailsViewController.swift */,
 			);
@@ -288,7 +285,6 @@
 			files = (
 				B15BC66A1AFE27B900C61CCE /* MovieDetailsViewController.swift in Sources */,
 				B15BC6651AFE1B3E00C61CCE /* TableViewCell.swift in Sources */,
-				B15BC6681AFE1E2500C61CCE /* TableView.m in Sources */,
 				B15BC6471AFE137F00C61CCE /* ViewController.swift in Sources */,
 				B15BC6451AFE137F00C61CCE /* AppDelegate.swift in Sources */,
 			);
