@@ -8,25 +8,29 @@
 
 import UIKit
 
-class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
 
     @IBOutlet weak var networkErrorImg: UIImageView!
     @IBOutlet weak var tableView: UITableView!
-    var movies: NSArray = []
+    @IBOutlet weak var searchBar: UISearchBar!
+    
+    var movies: [NSDictionary] = []
+    var filteredMovies: [NSDictionary] = []
     var refreshControl:UIRefreshControl!
     var url:String = ""
+    var searchActive = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         tableView.dataSource = self
         tableView.delegate = self
+        searchBar.delegate = self
         
         SVProgressHUD.show()
         tableView.separatorColor = UIColor.whiteColor()
         
         let test = self.tabBarController?.viewControllers
-        println(test)
         
         let dvds = test![0] as! ViewController
         dvds.url = "http://api.rottentomatoes.com/api/public/v1.0/lists/dvds/top_rentals.json?apikey=f2fk8pundhpxf77fscxvkupy"
@@ -45,7 +49,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             if (data != nil) {
                 self.networkErrorImg.hidden = true
                 var responseDictionary = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: nil) as! NSDictionary
-                self.movies = responseDictionary["movies"] as! NSArray
+                self.movies = responseDictionary["movies"] as! [NSDictionary]
                 self.tableView.reloadData()
             }
         }
@@ -59,15 +63,58 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         SVProgressHUD.dismiss()
     }
     
+    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+        
+        filterContentForSearchText(searchText)
+        
+        if searchText == "" {
+            self.searchActive = false
+        }
+        
+        self.tableView.reloadData()
+    }
+    
+    func filterContentForSearchText(searchText: String) {
+        // Filter the array using the filter method
+        self.filteredMovies = []
+        for movie in self.movies {
+            let title = movie["title"] as! String
+            let match = title.rangeOfString(searchText)
+            
+            if match != nil {
+                self.filteredMovies.append(movie)
+                self.searchActive = true
+            }
+        }
+    }
+    
+    func searchBarShouldEndEditing(searchBar: UISearchBar) -> Bool {
+        searchBar.resignFirstResponder()
+        return false
+    }
+    
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return movies.count
+        if self.searchActive {
+            return filteredMovies.count
+        }
+        else {
+            return movies.count
+        }
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCellWithIdentifier("com.venkatavijay.TableViewCell", forIndexPath: indexPath) as! TableViewCell
         
-        let movieDictionary = self.movies[indexPath.row] as! NSDictionary
+        let movieDictionary: NSDictionary
+        if self.searchActive {
+           movieDictionary = self.filteredMovies[indexPath.row] as NSDictionary
+        }
+        else {
+           movieDictionary = self.movies[indexPath.row] as NSDictionary
+        }
+        
+        
         cell.movieTitle.text = movieDictionary["title"] as? String
         
         let posters = movieDictionary["posters"] as! NSDictionary
@@ -84,6 +131,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
+    
     func onRefresh(){
         var url = NSURL(string: self.url)!
         var request = NSURLRequest(URL: url)
@@ -96,7 +144,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             if (data != nil) {
                 self.networkErrorImg.hidden = true
                 var responseDictionary = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: nil) as! NSDictionary
-                self.movies = responseDictionary["movies"] as! NSArray
+                self.movies = responseDictionary["movies"] as! [NSDictionary]
                 self.tableView.reloadData()
             }
         }
@@ -115,7 +163,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             dispatch_get_main_queue(), closure)
     }
 
-
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -125,7 +172,12 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         var vc = segue.destinationViewController as! MovieDetailsViewController
         var indexPath = tableView.indexPathForCell(sender as! UITableViewCell)
         
-        let movieDictionary = self.movies[indexPath!.row] as! NSDictionary
+        var movieDictionary:NSDictionary
+        if(self.searchActive) {
+            movieDictionary = self.filteredMovies[indexPath!.row] as NSDictionary
+        } else {
+            movieDictionary = self.movies[indexPath!.row] as NSDictionary
+        }
         
         let posters = movieDictionary["posters"] as! NSDictionary
         let thumbnailURL = posters["thumbnail"] as! String
