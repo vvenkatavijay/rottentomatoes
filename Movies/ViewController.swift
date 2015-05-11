@@ -120,7 +120,19 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         let posters = movieDictionary["posters"] as! NSDictionary
         let thumbnailURL = posters["thumbnail"] as! String
         
-        cell.movieThumbnail.setImageWithURL(NSURL(string:thumbnailURL))
+        var url = NSURL(string: thumbnailURL)!
+        let request = NSURLRequest(URL: url)
+        
+        cell
+        
+        cell.movieThumbnail.setImageWithURLRequest(request, placeholderImage: nil, success: { (request, response, image) in
+            cell.movieThumbnail.alpha = 0.0
+            cell.movieThumbnail.image = image
+            UIView.animateWithDuration(1.0, animations: {
+                cell.movieThumbnail.alpha = 1.0
+            })
+            }, failure: nil)
+        
         cell.mpaaLabel.text = movieDictionary["mpaa_rating"] as? String
         cell.movieSynopsis.text = movieDictionary["synopsis"] as? String
         cell.movieSynopsis.numberOfLines = 3;
